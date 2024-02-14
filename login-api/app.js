@@ -25,21 +25,22 @@ const connection = mysql.createConnection({
 //register here
 app.post('/register', jsonParser, function (req, res, next) {
 
-    //hash password here
-    bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
+    
+        //hash password here
+        bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
 
-        //insert data to database
-        connection.execute(
-            'INSERT INTO users(email,password,fname,lname) VALUES (?,?,?,?)',
-            [req.body.email, hash, req.body.fname, req.body.lname],
-            function(err,results,fields){
-                if(err){
-                    res.json({status: 'error', message: err});
-                    return
+            //insert data to database
+            connection.execute(
+                'INSERT INTO users(email,password,fname,lname) VALUES (?,?,?,?)',
+                [req.body.email, hash, req.body.fname, req.body.lname],
+                function(err,results,fields){
+                    if(err){
+                        res.json({status: 'error', message: err});
+                        return
+                    }
+                    res.json({status: 'Ok'})
                 }
-                res.json({status: 'Ok!!!'})
-            }
-        );
+            );
     });
 
     //var email = req.body.email;
